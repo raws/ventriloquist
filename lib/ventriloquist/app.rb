@@ -4,7 +4,7 @@ Bundler.require :default
 require 'resque'
 require 'sinatra/base'
 
-module Talkative
+module Ventriloquist
   class App < Sinatra::Base
     configure do
       set :root, File.join(File.dirname(__FILE__), '..', '..')

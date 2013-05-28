@@ -1,6 +1,6 @@
 require 'shellwords'
 
-module Talkative
+module Ventriloquist
   class Phrase
     @queue = :phrases
 
