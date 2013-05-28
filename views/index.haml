@@ -1,2 +1,55 @@
-%form{action: '/phrases', method: 'post'}
-  %input{autofocus: true, name: 'phrase', placeholder: 'Hello, stranger', type: 'text'}
+%table#history
+  - @phrases.each do |phrase|
+    %tr
+      %td.phrase= phrase.text
+      %td.timestamp= phrase.time
+%form{action: '/phrases', id: 'input-form', method: 'post'}
+  %input{autofocus: true, id: 'input', name: 'phrase', placeholder: 'Type a message to say', type: 'text'}
+:css
+  table#history {
+    line-height: 1.5em;
+    padding: 5px;
+    width: 100%;
+  }
+  
+  table#history td.timestamp {
+    color: #999;
+    font-size: 13px;
+    text-align: right;
+    width: 33%;
+  }
+  
+  input[name="phrase"] {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    padding: 5px;
+    width: 585px;
+  }
+:javascript
+  $(function() {
+    $('#input-form').submit(function(event) {
+      event.preventDefault();
+      
+      var data = {
+        'text': $('#input').val(),
+        'time': Math.round(Date.now() / 1000)
+      }
+      
+      data['id'] = CryptoJS.SHA1(data['text'] + data['time'].toString()).toString();
+      
+      $.post('/phrases', data);
+      $('#input').val('');
+    });
+    
+    var pusher = new Pusher('#{settings.pusher['key']}');
+    var channel = pusher.subscribe('phrases');
+    
+    channel.bind('phrase.spoken', function(data) {
+      var columns = [
+        $('<td>').addClass('phrase').text(data.text),
+        $('<td>').addClass('timestamp').text(data.time)
+      ];
+      var row = $('<tr>').append(columns);
+      $('#history').append(row);
+    });
+  });

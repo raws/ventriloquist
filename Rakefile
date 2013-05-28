@@ -1,7 +1,6 @@
-require 'bundler/setup'
-Bundler.require :default
+$:.unshift File.join(File.dirname(__FILE__), 'lib')
 
-require './lib/ventriloquist'
+require 'ventriloquist'
 require 'resque/tasks'
 
 task 'resque:setup' do
