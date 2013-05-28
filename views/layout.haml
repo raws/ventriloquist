@@ -3,5 +3,26 @@
   %head
     %meta{charset: 'utf-8'}
     %title Talkative
+    :css
+      html, body {
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        font-size: 13px;
+        margin: 25px 0;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      #container {
+        margin: 0 auto;
+        width: 600px;
+      }
+
+      input[name="phrase"] {
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        font-size: 18px;
+        padding: 5px;
+        width: 100%;
+      }
   %body
-    = yield
+    #container
+      %h1 Talkative
+      = yield
